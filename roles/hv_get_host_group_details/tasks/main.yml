@@ -1,0 +1,16 @@
+---
+# tasks file for logout
+- name: "Get Host Group Data"
+  uri:
+    url: "https://{{storage_ip}}/ConfigurationManager/v1/objects/host-groups/{{host_group_port}},{{host_group_id}}"
+    method: GET
+    headers:
+      Connection: "keep-alive"
+      Authorization: "Session {{token_response.json.token}}"
+      Content-Type: "application/json"
+      Accept-Language: "en"
+      Accept: "application/json, text/plain, */*"
+      Sec-Fetch-Site: "same-origin"
+      Sec-Fetch-Mode: "cors"
+    validate_certs: no
+  register: host_groups

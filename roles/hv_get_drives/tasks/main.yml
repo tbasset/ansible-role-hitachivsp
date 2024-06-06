@@ -1,0 +1,15 @@
+---
+# tasks file for Storage Drive Information
+- name: "Get Storage Drive Information"
+  uri:
+    url: 'http://{{storage_ip}}/ConfigurationManager/simple/v1/objects/drives'
+    method: GET
+    headers:
+      Accept: 'application/json, text/plain, */*'
+      Accept-Language: en
+      Authorization: "Session {{token_response.json.token}}"
+      Connection: keep-alive
+      Content-Type: application/json
+    follow_redirects: safe
+    validate_certs: no
+  register: drive_data

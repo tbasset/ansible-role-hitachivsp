@@ -1,0 +1,59 @@
+
+    - name: Login and Logout of Storage Array
+      hosts: localhost
+      vars_files:
+        - storage.json
+      vars:
+        - myauthstring: "{{storage_username}}:{{storage_password}}"
+
+      tasks:
+        - name: Login to Storage Array
+          import_role:
+            name: hv_login
+          when: (token_response.json.token is undefined)
+
+        - name: "Set HostGroup for Host"
+          set_fact:
+            host_group:
+              portId: CL1-A
+              hostGroupName: MyVMWARECluster
+              hostModeOptions:
+                - 54
+                - 63
+                - 114
+              hostMode: VMWARE_EX
+
+        - name: Create Host Group
+          import_role:
+            name: hv_create_host_group
+        - debug: var=new_job_task
+
+        - name: Get Job Status
+          import_role:
+            name: hv_get_job_status
+        - debug: var=job_status_response
+          when: (job_status_response.json.affectedResources is undefined)
+
+
+        - name: "Set HostGroup for Host"
+          set_fact:
+            host_group:
+              portId: CL2-A
+              hostGroupName: MyVMWARECluster
+              hostModeOptions:
+                - 54
+                - 63
+                - 114
+              hostMode: VMWARE_EX
+
+        - name: Create Host Group
+          import_role:
+            name: hv_create_host_group
+        - debug: var=new_job_task
+
+        - name: Get Job Status
+          import_role:
+            name: hv_get_job_status
+        - debug: var=job_status_response
+          when: (job_status_response.json.affectedResources is undefined)
+

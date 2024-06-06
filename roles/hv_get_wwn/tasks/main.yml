@@ -1,0 +1,17 @@
+---
+# tasks file for logout
+- name: "Show WWN in Group Port"
+  uri:
+    url: "https://{{storage_ip}}/ConfigurationManager/v1/objects/host-wwns?portId={{host_group_port}}&hostGroupNumber={{host_group_id}}"
+    method: GET
+    headers:
+      Connection: "keep-alive"
+      Authorization: "Session {{token_response.json.token}}"
+      Content-Type: "application/json"
+      Accept-Language: "en"
+      Accept: "application/json, text/plain, */*"
+      Sec-Fetch-Site: "same-origin"
+      Sec-Fetch-Mode: "cors"
+      Sec-Fetch-Dest: "empty"
+    validate_certs: no
+  register: host_wwns

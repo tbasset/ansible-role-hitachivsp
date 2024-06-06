@@ -1,0 +1,28 @@
+- name: Login, Create Pool and Logout of Storage Array
+  hosts: localhost
+  vars_files:
+    - storage.json
+  vars:
+    - myauthstring: "{{storage_username}}:{{storage_password}}"
+
+    - pool_id: 0
+
+  tasks:
+    - name: Login to Storage Array
+      import_role:
+        name: hv_login
+      when: (token_response.json.token is undefined)
+
+
+
+    - name: Delete Pool
+      import_role:
+        name: hv_delete_pool
+
+    - name: Job Status
+      import_role:
+        name: hv_get_status_resource
+    - debug: var=job_status_response
+
+    
+

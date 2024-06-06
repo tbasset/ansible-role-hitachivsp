@@ -1,0 +1,21 @@
+---
+# tasks file for get job status
+- name: "Get Resource Status"
+  uri:
+    url: "https://{{storage_ip}}{{new_job_task.json.statusResource}}"
+    method: GET
+    headers:
+      Connection: "keep-alive"
+      Authorization: "Session {{token_response.json.token}}"
+      Content-Type: "application/json"
+      Accept-Language: "en"
+      Accept: "application/json, text/plain, */*"
+      Sec-Fetch-Site: "same-origin"
+      Sec-Fetch-Mode: "cors"
+    validate_certs: no
+  when: (new_job_task is defined)
+  register: job_status_response
+  until: job_status_response.json.progress != "processing"
+  retries: 600
+  delay: 1
+

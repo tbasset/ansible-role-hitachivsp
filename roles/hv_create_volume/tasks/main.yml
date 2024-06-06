@@ -1,0 +1,25 @@
+---
+# tasks file for logout
+- name: "Create Volume"
+  uri:
+    url: "https://{{storage_ip}}/ConfigurationManager/v1/objects/ldevs"
+    method: POST
+    body:
+      {
+        "byteFormatCapacity": "{{volume_capacity_in_gb}}G",
+        "poolId": "{{pool_id}}",
+      }
+    body_format: json
+    status_code: 202
+    headers:
+      Connection: "keep-alive"
+      Authorization: "Session {{token_response.json.token}}"
+      Content-Type: "application/json"
+      Accept-Language: "en"
+      Accept: "application/json, text/plain, */*"
+      Sec-Fetch-Site: "same-origin"
+      Sec-Fetch-Mode: "cors"
+      Sec-Fetch-Dest: "empty"
+    validate_certs: no
+  register: new_job_task
+  when: (pool_id is defined) and (volume_capacity_in_gb is defined)

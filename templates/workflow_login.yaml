@@ -1,0 +1,14 @@
+- name: Login and Logout of Storage Array
+  hosts: localhost
+  vars_files:
+    - storage.json
+  vars:
+    - myauthstring: "{{storage_username}}:{{storage_password}}"
+  tasks:
+    - name: Login to Storage Array
+      import_role:
+        name: hv_login
+    - name: "Set Login token for Downstream Usage"
+      set_stats:
+        data:
+          token_response:  "{{ token_response }}"

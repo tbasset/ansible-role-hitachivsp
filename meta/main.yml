@@ -1,0 +1,8 @@
+galaxy_info:
+  author: "Thomas Basset"
+  description: "Automations for Hitachi Vantara Storage Arrays"
+  company: "Private Company"
+  license: license (GPL-2.0-or-later, MIT, etc)
+  min_ansible_version: 2.9
+  galaxy_tags: [ 'hitachi', 'rest' ]
+dependencies: [ ]

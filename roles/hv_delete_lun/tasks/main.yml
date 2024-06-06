@@ -1,0 +1,18 @@
+---
+# tasks file for logout
+- name: "Delete Lun to Host Groups matching "
+  uri:
+    url: "https://{{storage_ip}}/ConfigurationManager/v1/objects/luns/{{ item.lunId  }}"
+    method: DELETE
+    status_code: 202
+    headers:
+      Connection: "keep-alive"
+      Authorization: "Session {{token_response.json.token}}"
+      Content-Type: "application/json"
+      Accept-Language: "en"
+      Accept: "application/json, text/plain, */*"
+      Sec-Fetch-Site: "same-origin"
+      Sec-Fetch-Mode: "cors"
+    validate_certs: no
+  loop: "{{ luns.json.data }}"
+  register: new_job_task

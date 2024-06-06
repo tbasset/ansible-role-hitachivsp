@@ -1,0 +1,37 @@
+
+    - name: Login and Logout of Storage Array
+      hosts: localhost
+      vars_files:
+        - storage.json
+      vars:
+        - myauthstring: "{{storage_username}}:{{storage_password}}"
+
+        - host_group_port: "CL1-A"
+        - host_group_id: "1"
+      tasks:
+        - name: Login to Storage Array
+          import_role:
+            name: hv_login
+          when: (token_response.json.token is undefined)
+
+        - name: "Delete Host Group"
+          set_fact:
+            host_group_port: "CL1-A"
+            host_group_id: "1"
+
+        - name: Delete Host Group
+          import_role:
+            name: hv_delete_host_group
+        - debug: var=new_job_task
+
+        - name: "Delete Host Group"
+          set_fact:
+            host_group_port: "CL2-A"
+            host_group_id: "1"
+
+        - name: Delete Host Group
+          import_role:
+            name: hv_delete_host_group
+        - debug: var=new_job_task
+
+

@@ -1,0 +1,25 @@
+---
+# tasks file for logout
+- name: "Add Lun to Host Groups matching {{ host_group_name }}"
+  uri:
+    url: "https://{{storage_ip}}/ConfigurationManager/v1/objects/luns"
+    method: POST
+    status_code: 202
+    body:
+      {
+        "portId": "{{ item.portId }}",
+        "hostGroupNumber": "{{ item.hostGroupNumber }}",
+        "ldevId": "{{ my_ldevId }}",
+      }
+    body_format: json
+    headers:
+      Connection: "keep-alive"
+      Authorization: "Session {{token_response.json.token}}"
+      Content-Type: "application/json"
+      Accept-Language: "en"
+      Accept: "application/json, text/plain, */*"
+      Sec-Fetch-Site: "same-origin"
+      Sec-Fetch-Mode: "cors"
+    validate_certs: no
+  when: "host_group_name == item.hostGroupName"
+  loop: "{{ host_groups.json.data }}"

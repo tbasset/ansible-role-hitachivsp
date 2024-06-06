@@ -1,0 +1,21 @@
+---
+# tasks file for change name
+- name: "Change LDEV Name"
+  uri:
+    url: "https://{{storage_ip}}{{job_status_response.json.affectedResources.0}}"
+    method: PUT
+    body: { "label": "{{volume_label}}" }
+    body_format: json
+    status_code: 202
+    headers:
+      Connection: "keep-alive"
+      Authorization: "Session {{token_response.json.token}}"
+      Content-Type: "application/json"
+      Accept-Language: "en"
+      Accept: "application/json, text/plain, */*"
+      Sec-Fetch-Site: "same-origin"
+      Sec-Fetch-Mode: "cors"
+    validate_certs: no
+  register: new_job_task
+  when: (job_status_response.json.affectedResources is defined)
+

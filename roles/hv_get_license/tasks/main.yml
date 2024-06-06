@@ -1,0 +1,15 @@
+---
+# tasks file for Storage License Information
+- name: "Get Storage License Information"
+  uri:
+    url: 'http://{{storage_ip}}/ConfigurationManager/v1/objects/licenses'
+    method: GET
+    headers:
+      Accept: 'application/json, text/plain, */*'
+      Accept-Language: en
+      Authorization: "Session {{token_response.json.token}}"
+      Connection: keep-alive
+      Content-Type: application/json
+    follow_redirects: safe
+    validate_certs: no
+  register: license_data

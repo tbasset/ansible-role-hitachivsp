@@ -1,0 +1,22 @@
+---
+# tasks file for Craete Pool
+- name: "Create Pool"
+  uri:
+    url: "http://{{storage_ip}}/ConfigurationManager/simple/v1/objects/pools"
+    method: POST
+    body: {"name":"{{pool_name}}","isEncryptionEnabled":"{{is_encrypted}}","drives":[{"driveTypeCode":"{{drive_type_code}}","dataDriveCount":"{{data_drive_count}}","raidLevel":"{{raid_level}}"}]}
+    body_format: json
+    status_code: 202
+    headers:
+      Connection: "keep-alive"
+      Authorization: "Session {{token_response.json.token}}"
+      Content-Type: "application/json"
+      Accept-Language: "en"
+      Accept: "application/json, text/plain, */*"
+      Sec-Fetch-Site: "same-origin"
+      Sec-Fetch-Mode: "cors"
+    validate_certs: no
+  register: new_job_task
+  when: (is_encrypted is defined) and (pool_name is defined) and (drive_type_code is defined) and (data_drive_count is defined) and (raid_level is defined)
+
+
